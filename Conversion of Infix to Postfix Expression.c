@@ -14,39 +14,42 @@ int main()
     {
         char ch = infix[i];
 
-        // Operand
+        
         if (isalnum(ch))
         {
             postfix[j++] = ch;
         }
-
-        // Opening bracket
+        
         else if (ch == '(')
         {
             stack[++top] = ch;
         }
-
-        // Closing bracket
+       
         else if (ch == ')')
         {
             while (top != -1 && stack[top] != '(')
             {
                 postfix[j++] = stack[top--];
             }
-
-            if (top != -1)
-                top--;  // Remove '('
+            top--;   
         }
-
-        // Operator
+        
         else
         {
             while (top != -1 &&
                    stack[top] != '(' &&
-                   ((ch == '+' || ch == '-') &&
-                    (stack[top] == '*' || stack[top] == '/' || stack[top] == '^') ||
-                    (ch == '*' || ch == '/') &&
-                    stack[top] == '^'))
+                   (
+                       ((ch == '+' || ch == '-') &&
+                        (stack[top] == '+' || stack[top] == '-' ||
+                         stack[top] == '*' || stack[top] == '/' ||
+                         stack[top] == '^')) ||
+
+                       ((ch == '*' || ch == '/') &&
+                        (stack[top] == '*' || stack[top] == '/' ||
+                         stack[top] == '^')) ||
+
+                       (ch == '^' && stack[top] == '^')
+))
             {
                 postfix[j++] = stack[top--];
             }
@@ -57,7 +60,7 @@ int main()
         i++;
     }
 
-    // Pop remaining operators
+    
     while (top != -1)
     {
         postfix[j++] = stack[top--];
@@ -68,4 +71,5 @@ int main()
     printf("Postfix Expression: %s\n", postfix);
 
     return 0;
+
 }
